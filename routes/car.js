@@ -1,7 +1,7 @@
 import {
   Router
 } from 'express';
-import CarController from '../controllers/mysql/car';
+import CarController from '../controllers/car';
 const router = new Router();
 
 router.route('/')

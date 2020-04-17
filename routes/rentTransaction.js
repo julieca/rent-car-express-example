@@ -1,7 +1,7 @@
 import {
   Router
 } from 'express';
-import RentTransactionController from '../controllers/mysql/rentTransaction';
+import RentTransactionController from '../controllers/rentTransaction';
 const router = new Router();
 
 router.route('/')

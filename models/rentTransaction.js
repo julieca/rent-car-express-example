@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     rentFrom: DataTypes.DATE,
     rentTo: DataTypes.DATE,
-    total: DataTypes.NUMBER,
+    total: DataTypes.INTEGER,
   }, {
     timestamps: true,
     paranoid: true

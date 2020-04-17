@@ -3,8 +3,8 @@
 import _ from 'lodash';
 import {
   Car
-} from '../../models';
-import response from '../../helpers/response';
+} from '../models';
+import response from '../helpers/response';
 
 const postCar = {};
 

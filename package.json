@@ -30,7 +30,7 @@
         "mysql": "^2.16.0",
         "mysql2": "^1.6.1",
         "nodemailer": "^4.6.8",
-        "nodemon": "^1.18.4",
+        "nodemon": "^1.19.4",
         "oauth2-server": "^3.0.1",
         "path": "^0.12.7",
         "sequelize": "^4.39.0",

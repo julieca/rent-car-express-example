@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING,
     merk: DataTypes.STRING,
     color: DataTypes.STRING,
-    price: DataTypes.NUMBER,
-    passengerNum: DataTypes.NUMBER,
-    year: DataTypes.NUMBER,
+    price: DataTypes.INTEGER,
+    passengerNum: DataTypes.INTEGER,
+    year: DataTypes.INTEGER,
   }, {
     timestamps: true,
     paranoid: true
