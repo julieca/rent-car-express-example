@@ -1,0 +1,7 @@
+ENV=lcaol
+DBIDENT=something
+DBURL=localhost
+DBNAME=capelladb
+DBUSER=admin
+DBPW=password
+DBPORT=3306

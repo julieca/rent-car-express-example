@@ -1,0 +1,27 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "globals": {
+        "process": true,
+        "module": false,
+        "__dirname": false
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "linebreak-style": 0,
+        "semi": ["error", "always"],
+        "prefer-destructuring": "warn",
+        "no-mixed-operators": [1],
+        "no-bitwise": [1],
+        "no-console": "warn",
+        "no-unused-vars": "warn",
+        "no-constant-condition": "warn"
+    }
+}
