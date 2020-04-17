@@ -3,13 +3,7 @@ import fs from "fs";
 import path from "path";
 import Sequelize from "sequelize";
 
-import {
-  DBURL,
-  DBNAME,
-  DBUSER,
-  DBPW,
-  DBPORT
-} from "../../config/mysql";
+import { DBURL, DBNAME, DBUSER, DBPW, DBPORT } from "../../config/mysql";
 
 const basename = path.basename(__filename);
 // var config    = require(__dirname + '/../config/config.js')[env];
@@ -32,22 +26,22 @@ const sequelize = new Sequelize(DBNAME, DBUSER, DBPW, {
     max: 5,
     min: 0,
     acquire: 30000,
-    idle: 10000
-  }
+    idle: 10000,
+  },
 });
 /* } */
 
 fs.readdirSync(__dirname)
   .filter(
-    file =>
-    file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+    (file) =>
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
   )
-  .forEach(file => {
+  .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
@@ -56,37 +50,28 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-
-db.Device.belongsTo(db.Zone, {
-  as: "Zone",
-  foreignKey: "zoneID",
-  targetKey: "id"
+//foreign key for carID
+db.RentTransactionDetail.belongsTo(db.Car, {
+  as: "Car",
+  foreignKey: "carID",
+  targetKey: "id",
 });
-db.Zone.hasMany(db.Device, {
-  foreignKey: "zoneID",
-  sourceKey: "id"
+db.Car.hasMany(db.RentTransactionDetail, {
+  foreignKey: "carID",
+  sourceKey: "id",
 });
-
-
-
-
-
-
-db.RentTransaction.belongsToMany(db.RentTransactionDetail, {
-  as: "RentTransactionDetails",
-  foreignKey: "transactionID",
-  constraints: false
-});
-
+//foreign key for RentTransactionID
 db.RentTransactionDetail.belongsTo(db.RentTransaction, {
-  as: "RentTransactions",
+  as: "RentTransaction",
   foreignKey: "transactionID",
   targetKey: "id",
-  constraints: false
+});
+db.RentTransaction.hasMany(db.RentTransactionDetail, {
+  foreignKey: "transactionID",
+  sourceKey: "id",
 });
 
 //db.RentTransaction.belongsTo(db.Car);
 // db.RentTransaction.belongsTo(db.Action);
-
 
 module.exports = db;

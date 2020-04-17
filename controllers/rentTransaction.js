@@ -2,8 +2,7 @@
 
 import _ from 'lodash';
 import {
-  RentTransaction,
-  RentTransactionDetail
+  RentTransaction
 } from '../../models';
 import response from '../../helpers/response';
 
@@ -15,8 +14,9 @@ rentTransaction.add = async (req, res) => {
     const keys = Object.keys(RentTransaction.attributes);
     const body = _.pick(req.body, keys);
 
-    const data = await RentTransaction.create(body);
-    return response.sendOK(res, data);
+    const transaction = await RentTransaction.create(body);
+    await transaction.setDetails(req.body.cars);
+    return response.sendOK(res, transaction);
   } catch (err) {
     return response.sendError(res, err);
   }
