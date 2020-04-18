@@ -4,8 +4,8 @@ import _ from 'lodash';
 import {
   Car
 } from '../models';
-import response from '../helpers/response';
-
+// import response from '../helpers/response';
+import ResponseFactory from '../helpers/response';
 const postCar = {};
 
 //GET
@@ -47,9 +47,12 @@ postCar.getAll = async (req, res) => {
     // }
 
     const car = await Car.findAll(filter);
-    return response.sendOK(res, car);
+    //return response.sendOK(res, car);
+    const response = new ResponseFactory('ok', car);
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 
@@ -60,9 +63,11 @@ postCar.getById = async (req, res) => {
     const car = await Car.findById(req.params.id);
     resData = car.dataValues;
 
-    return response.sendOK(res, resData);
+    const response = new ResponseFactory('ok', resData);
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 
@@ -73,9 +78,11 @@ postCar.add = async (req, res) => {
     const body = _.pick(req.body, keys);
 
     const data = await Car.create(body);
-    return response.sendOK(res, data);
+    const response = new ResponseFactory('ok', data);
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 
@@ -91,13 +98,14 @@ postCar.update = async (req, res) => {
       }
     });
     if (result) {
-      return response.sendOK(res, car)
+      const response = new ResponseFactory('ok', result);
+      return res.status(response.status).json(response.payload)
     }
-    return response.sendError(res, {
-      message: 'Fail to update Car'
-    });
+    const response = new ResponseFactory('err', 'Fail to update Car');
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 
@@ -111,13 +119,14 @@ postCar.remove = async (req, res) => {
           id: req.params.id
         }
       });
-      return response.sendOK(res, car)
+      const response = new ResponseFactory('ok', car);
+      return res.status(response.status).json(response.payload)
     }
-    return response.sendError(res, {
-      message: 'Car not Found'
-    });
+    const response = new ResponseFactory('notFound');
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 

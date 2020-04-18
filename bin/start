@@ -17,7 +17,7 @@ const app = require('../app').default;
 const debug = require('debug')('express-es-6:server');
 const http = require('http');
 
-var models = require('../models/mysql');
+var models = require('../models/index');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -42,7 +42,6 @@ const normalizePort = (val) => {
 /**
  * Get port from environment and store in Express.
  */
-
 const port = normalizePort(process.env.PORT || config.default.server.port);
 
 app.set('port', port);
@@ -53,57 +52,57 @@ app.set('port', port);
 
 const server = http.createServer(app);
 models.sequelize.sync({
-    //force: true
-  }).then(function () { //using destructive operation
-    /**
-     * Listen on provided port, on all network interfaces.
-     */
+  //force: true
+}).then(function () { //using destructive operation
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
 
-    server.listen(port);
+  server.listen(port);
 
-    /**
-     * Event listener for HTTP server "error" event.
-     */
+  /**
+   * Event listener for HTTP server "error" event.
+   */
 
-    server.on('error', (error) => {
-      if (error.syscall !== 'listen') {
+  server.on('error', (error) => {
+    if (error.syscall !== 'listen') {
+      throw error;
+    }
+
+    const bind = typeof port === 'string' ?
+      `Pipe ${port}` :
+      `Port ${port}`;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        debug(`${bind} requires elevated privileges`);
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        debug(`${bind} is already in use`);
+        process.exit(1);
+        break;
+      default:
         throw error;
-      }
+    }
+  });
 
-      const bind = typeof port === 'string' ?
-        `Pipe ${port}` :
-        `Port ${port}`;
+  /**
+   * Event listener for HTTP server "listening" event.
+   */
 
-      // handle specific listen errors with friendly messages
-      switch (error.code) {
-        case 'EACCES':
-          debug(`${bind} requires elevated privileges`);
-          process.exit(1);
-          break;
-        case 'EADDRINUSE':
-          debug(`${bind} is already in use`);
-          process.exit(1);
-          break;
-        default:
-          throw error;
-      }
-    });
+  server.on('listening', () => {
+    const addr = server.address();
+    const bind = typeof addr === 'string' ?
+      `pipe ${addr}` :
+      `port ${addr.port}`;
+    debug(`Listening on ${bind}`);
 
-    /**
-     * Event listener for HTTP server "listening" event.
-     */
+    console.log(`Listening on ${bind}`);
+  });
 
-    server.on('listening', () => {
-      const addr = server.address();
-      const bind = typeof addr === 'string' ?
-        `pipe ${addr}` :
-        `port ${addr.port}`;
-      debug(`Listening on ${bind}`);
-
-      console.log(`Listening on ${bind}`);
-    });
-
-  })
+})
   .catch(function (err) {
     console.log(err)
   });

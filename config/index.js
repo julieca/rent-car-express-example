@@ -5,13 +5,6 @@ export default {
     port: 9000,
     bodyLimit: "100kb"
   },
-  database: {
-    url: `mongodb://${host}/express-api`,
-    properties: {
-      promiseLibrary: global.Promise,
-      useNewUrlParser: true
-    }
-  },
   key: {
     tokenExpireInMinutes: 1440
   }

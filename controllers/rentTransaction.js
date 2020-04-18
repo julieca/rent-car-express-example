@@ -4,8 +4,8 @@ import _ from 'lodash';
 import {
   RentTransaction
 } from '../models';
-import response from '../helpers/response';
 
+import ResponseFactory from '../helpers/response';
 const rentTransaction = {};
 
 //Create
@@ -16,9 +16,11 @@ rentTransaction.add = async (req, res) => {
 
     const transaction = await RentTransaction.create(body);
     await transaction.setDetails(req.body.cars);
-    return response.sendOK(res, transaction);
+    const response = new ResponseFactory('ok', transaction);
+    return res.status(response.status).json(response.payload)
   } catch (err) {
-    return response.sendError(res, err);
+    const response = new ResponseFactory('err', err.message);
+    return res.status(response.status).json(response.payload)
   }
 }
 
